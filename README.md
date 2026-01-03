@@ -12,16 +12,7 @@ RecipeLang is a small, Python-based domain-specific language (DSL) and toolset f
 - Export formats: JSON, YAML, and plain text
 - Command-line interface (CLI) for parsing, validating, and transforming recipes
 
-## Quick start
 
-Requirements:
-- Python 3.8+
-- pip
-
-Install dependencies (if the repo includes a requirements file):
-```bash
-pip install -r requirements.txt
-```
 
 If this project is packaged, you can install it locally:
 ```bash
