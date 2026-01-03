@@ -1,131 +1,123 @@
-# RecipeLang
+# RecipeLang 🍰
 
-RecipeLang is a small, Python-based domain-specific language (DSL) and toolset for authoring, parsing, and processing structured cooking recipes. It aims to make recipes machine-readable so you can programmatically scale servings, convert units, generate shopping lists, and integrate recipes into applications.
+A simple programming language for writing cooking recipes in natural language.
 
+## Installation
 
+**Requirements:** Python 3.6+
 
-## Features
-
-- Human-friendly recipe DSL (author recipes in a simple, readable format)
-- Parser that converts recipes into structured Python objects
-- Utilities for scaling servings and converting units
-- Export formats: JSON, YAML, and plain text
-- Command-line interface (CLI) for parsing, validating, and transforming recipes
-
-
-
-If this project is packaged, you can install it locally:
 ```bash
-pip install -e .
+# Clone the repository
+git clone https://github.com/yourusername/recipelang.git
+cd recipelang
+
+# Make executable (optional)
+chmod +x recipelang.py
 ```
 
-## Usage
+## Quick Start
 
-Examples below assume a package or module named `recipelang`. Update module/command names as needed.
-
-CLI
 ```bash
-# Parse a recipe file and print JSON to stdout
-python -m recipelang.cli parse path/to/recipe.rpl --format json
+# Run interactive mode
+python3 recipelang.py
 
-# Scale a recipe to 4 servings
-python -m recipelang.cli scale path/to/recipe.rpl --servings 4 --output scaled.rpl
+# Or execute a recipe file
+python3 recipelang.py my_recipe.rl
 ```
 
-Python API
-```python
-from recipelang import parser, transformer, io
-
-# Parse DSL text into a Recipe object
-text = """
-title: Pancakes
-servings: 2
-
-ingredients:
-  - 1 cup flour
-  - 1 cup milk
-  - 1 egg
-
-steps:
-  - Mix ingredients.
-  - Cook on a hot griddle for 2-3 minutes per side.
-"""
-recipe = parser.parse(text)
-
-# Scale recipe
-scaled = transformer.scale(recipe, servings=4)
-
-# Export to JSON
-print(io.to_json(scaled))
-```
-
-## Recipe DSL (example)
-
-A simple example of the RecipeLang DSL (file extension: `.rpl` or `.recipelang`):
+## Project Structure
 
 ```
-title: Classic Pancakes
-servings: 2
-
-ingredients:
-  - 1 cup all-purpose flour
-  - 1 cup milk
-  - 1 large egg
-  - 1 tbsp sugar
-  - 1 tsp baking powder
-  - pinch salt
-
-steps:
-  - Whisk together dry ingredients.
-  - Add milk and egg; stir until combined.
-  - Heat a skillet and pour 1/4 cup batter for each pancake.
-  - Cook until bubbles form and edges set, flip and cook until golden.
+recipelang/
+├── recipelang.py          # Main interpreter
+├── README.md              # This file
+└── examples/              # Example recipe files
+    ├── cake.rl
+    ├── beverage.rl
+    └── pancakes.rl
 ```
 
-## Project structure (suggested)
+## Syntax
 
-- recipelang/
-  - parser.py — parses DSL into objects
-  - model.py — Recipe, Ingredient, Step dataclasses
-  - transformer.py — scaling, unit conversion helpers
-  - cli.py — command-line entry points
-  - io.py — import/export utilities (JSON/YAML)
-- tests/ — unit and integration tests
-- examples/ — sample recipes and usage examples
-- requirements.txt
-- README.md
+### Two Command Types
 
-Adjust the structure above to match your repository.
+**1. Mix ingredients:**
+```
+mix flour and eggs
+add sugar and butter
+```
 
-## Development
+**2. Timed actions:**
+```
+bake for 30 minutes
+heat for 5 minutes
+```
 
-- Create a virtual environment:
-  ```bash
-  python -m venv .venv
-  source .venv/bin/activate
-  pip install -r requirements-dev.txt
-  ```
-- Run tests:
-  ```bash
-  pytest
-  ```
+### Valid Keywords
 
-## Contributing
+**Actions:** `mix`, `add`, `bake`, `heat`, `cool`
 
-Contributions are welcome. Typical workflow:
+**Ingredients:** `flour`, `eggs`, `sugar`, `butter`, `milk`, `salt`, `water`, `vanilla`
 
-1. Fork the repository.
-2. Create a feature branch: `git checkout -b feat/my-feature`
-3. Add tests and documentation.
-4. Open a pull request describing your changes.
+**Time Units:** `seconds`, `minutes`, `hours`
 
-Please follow the repository's coding style and add tests for new functionality.
+## Example Recipe
 
+**File:** `cake.rl`
+```
+# Simple cake recipe
+mix flour and eggs
+add sugar and butter
+bake for 30 minutes
+cool for 10 minutes
+```
 
+**Run:**
+```bash
+python3 recipelang.py cake.rl
+```
 
-## Contact
+**Output:**
+```
+==================================================
+           YOUR RECIPE
+==================================================
 
-Maintainer: webmancer1  
-Repo: https://github.com/webmancer1/recipelang
+INGREDIENTS:
+  butter, eggs, flour, sugar
 
-If you want, tell me whether the project has a CLI name or package import name I should reflect in this README and I’ll update the commands and examples to match.
+INSTRUCTIONS:
+  Step 1: Mix flour and eggs
+  Step 2: Add sugar and butter
+  Step 3: Bake for 30 minutes
+  Step 4: Cool for 10 minutes
+
+==================================================
+```
+
+## Interactive Mode
+
+```bash
+python3 recipelang.py
+```
+
+**Commands:**
+- `help` - Show help
+- `recipe` - Display current recipe
+- `clear` - Clear recipe
+- `quit` - Exit
+
+## Grammar (BNF)
+
+```bnf
+<statement> ::= <action> <ingredient> "and" <ingredient>
+              | <action> "for" <time> <unit>
+              
+<action>     ::= "mix" | "bake" | "heat" | "cool" | "add"
+<ingredient> ::= "flour" | "eggs" | "sugar" | "butter" | "milk" | "salt" | "water" | "vanilla"
+<unit>       ::= "minutes" | "hours" | "seconds"
+```
+
+## License
+
+MIT License
